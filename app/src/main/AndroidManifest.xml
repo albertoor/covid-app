@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Covidapp">
         <activity
-            android:name=".UserActivity"
+            android:name=".LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".HomeActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
@@ -23,9 +26,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:exported="true" />
     </application>
 
 </manifest>

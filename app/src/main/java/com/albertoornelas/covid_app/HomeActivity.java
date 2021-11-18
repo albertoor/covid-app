@@ -6,29 +6,35 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class UserActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
-    private Button btnLogOut;
+    private Button bntLogout;
+    private TextView currentUserTxt;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
+        setContentView(R.layout.activity_home);
 
-        // iniciando variables
-        btnLogOut = (Button) findViewById(R.id.btnLogOut);
+        // Iniciando variables
+        bntLogout = (Button) findViewById(R.id.btnLogout);
+        auth = FirebaseAuth.getInstance();
+        currentUserTxt = findViewById(R.id.currentUseTxt);
+
+        currentUserTxt.setText("Hola, " + auth.getCurrentUser().getEmail());
 
         // listeners
-        btnLogOut.setOnClickListener(new View.OnClickListener() {
+        bntLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(UserActivity.this, LoginActivity.class);
+                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });

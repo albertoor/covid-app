@@ -14,4 +14,13 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Theme.Covidapp.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Covidapp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Covidapp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>
