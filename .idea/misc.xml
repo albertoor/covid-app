@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_show_events.xml" value="0.22447916666666667" />
         <entry key="app/src/main/res/layout/activity_user.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/event_list_row.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item.xml" value="0.11894273127753303" />
       </map>
     </option>
