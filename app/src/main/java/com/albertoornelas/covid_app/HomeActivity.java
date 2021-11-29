@@ -41,6 +41,9 @@ public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "Events";
     private TextView addEventLink;
 
+    private Event event;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +57,6 @@ public class HomeActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         addEventLink = findViewById(R.id.addEventLink);
 
-        // functiones para deplegar info
         initViews();
         getEvents();
 
@@ -92,6 +94,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException error) {
                 if (!snapshots.isEmpty()) {
+//                    Event event = new Event();
                     for (QueryDocumentSnapshot eventDoc : snapshots) {
                         Event event = eventDoc.toObject(Event.class);
                         event.setDocId(eventDoc.getId());
