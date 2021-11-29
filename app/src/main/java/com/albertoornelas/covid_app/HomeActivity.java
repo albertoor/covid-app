@@ -8,22 +8,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -95,20 +88,18 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void getEvents() {
-        db.collection("events").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        db.collection("events").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                if (!queryDocumentSnapshots.isEmpty()) {
-                    for (QueryDocumentSnapshot events : queryDocumentSnapshots) {
-                        Event event = events.toObject(Event.class);
+            public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException error) {
+                if (!snapshots.isEmpty()) {
+                    for (QueryDocumentSnapshot eventDoc : snapshots) {
+                        Event event = eventDoc.toObject(Event.class);
+                        event.setDocId(eventDoc.getId());
+
                         eventList.add(event);
                         mAdapter.notifyDataSetChanged();
                     }
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
             }
         });
     }
