@@ -1,89 +1,70 @@
 package com.albertoornelas.covid_app;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class AdminPanel extends AppCompatActivity {
 
-    private Button bntLogout;
-    private TextView currentUserTxt;
-    private FirebaseAuth auth;
-    private FirebaseAuth.AuthStateListener authStateListener;
-
+    private Button btnLogoutAdmin;
+    private Button btnAddEventAdminLink;
     private List<Event> eventList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private EventAdapter mAdapter;
+    private EventAdapterAdmin mAdapter;
     private LinearLayoutManager mLayoutManager;
     private FirebaseFirestore db;
-    private static final String TAG = "Events";
-    private TextView addEventLink;
-
-    private Event event;
-
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_admin_panel);
 
-        // Iniciando variables
-        bntLogout = (Button) findViewById(R.id.btnLogout);
-        auth = FirebaseAuth.getInstance();
-        currentUserTxt = findViewById(R.id.currentUseTxt);
-        currentUserTxt.setText("Hola, " + auth.getCurrentUser().getEmail());
+        btnLogoutAdmin = (Button) findViewById(R.id.btnLogoutAdmin);
+        btnAddEventAdminLink = (Button) findViewById(R.id.btnAddEventAdminLink);
         db = FirebaseFirestore.getInstance();
-//        addEventLink = findViewById(R.id.addEventLink);
+        auth = FirebaseAuth.getInstance();
 
         initViews();
         getEvents();
 
         // listeners
-        bntLogout.setOnClickListener(new View.OnClickListener() {
+        btnLogoutAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                Intent intent = new Intent(AdminPanel.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
 
-//        addEventLink.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                FirebaseAuth.getInstance().signOut();
-//                Intent intent = new Intent(HomeActivity.this, AddEvent.class);
-//                startActivity(intent);
-//            }
-//        });
+        btnAddEventAdminLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminPanel.this, AddEvent.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initViews() {
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mAdapter = new EventAdapter(eventList);
-        mLayoutManager = new LinearLayoutManager(HomeActivity.this);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewAdmin);
+        mAdapter = new EventAdapterAdmin(eventList);
+        mLayoutManager = new LinearLayoutManager(AdminPanel.this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
@@ -94,11 +75,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException error) {
                 if (!snapshots.isEmpty()) {
-//                    Event event = new Event();
+                    Event event = new Event();
                     for (QueryDocumentSnapshot eventDoc : snapshots) {
-                        Event event = eventDoc.toObject(Event.class);
+                        event = eventDoc.toObject(Event.class);
                         event.setDocId(eventDoc.getId());
-
                         eventList.add(event);
                         mAdapter.notifyDataSetChanged();
                     }

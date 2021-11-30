@@ -1,32 +1,15 @@
 package com.albertoornelas.covid_app;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder>  {
 
@@ -69,42 +52,32 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.btnAsist:
-                    Map<String, Object> attendee = new HashMap<>();
-                    attendee.put("userId", auth.getCurrentUser().getUid());
+//                    Map<String, Object> assists = new HashMap<>();
+//                    assists.put("userId", auth.getCurrentUser().getUid());
+//                    assists.put("eventId", docId.getText().toString());
+//                    assists.put("isInfected", false);
 
-                    // Add data in events
-                    db.collection("events")
-                            .document(docId.getText().toString())
-                            .collection("attendees")
-                            .document().set(attendee);
+                    // Buscar los campos
+//                    Query queryFindUserId = db.collection("assists").whereEqualTo(FieldPath.of("userId"), auth.getCurrentUser()).startAt();
+//                    System.out.println(queryFindUserId);
+//                    Query queryFindEventId = db.collection("assists").whereEqualTo("eventId", docId.getText().toString());
+
+                    // Comprobar si el usuario esta inscrito en el evento
+
+                    // AAgregados su asistencia en el evento
+//                    db.collection("assists").document().set(assists).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                        @Override
+//                        public void onSuccess(Void unused) {
+//                            Toast.makeText(btnAsist.getContext(), "Te has inscrito en el evento", Toast.LENGTH_LONG).show();
+//                            btnAsist.setText("YA ESTAS INSCRITO!!!");
+//                        }
+//                    });
                     break;
                 default:
                     break;
             }
         }
     }
-
-
-//    Event event = new Event(nameTxt.getText().toString(),
-//            placeTxt.getText().toString(),
-//            timestampTxt.getText().toString(),
-//            Integer.parseInt(aforoNum.getText().toString()));
-//
-//                db.collection("events").document().set(event).addOnSuccessListener(new OnSuccessListener<Void>() {
-//        @Override
-//        public void onSuccess(Void unused) {
-//            Log.d(TAG, "Evento agreado");
-//            nameTxt.setText("");
-//            placeTxt.setText("");
-//            timestampTxt.setText("");
-//            aforoNum.setText("");
-//        }
-//    }).addOnFailureListener(new OnFailureListener() {
-//        @Override
-//        public void onFailure(@NonNull Exception e) {
-//            Log.w(TAG, "Error al agregar el evento", e);
-//        }
-//    });
 
     public EventAdapter (List<Event> eventList) {
         this.eventsList = eventList;
@@ -113,9 +86,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        eventsList.get(0);
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_list_row, parent, false);
-
         return new MyViewHolder(itemView);
     }
 

@@ -75,7 +75,14 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this, "Usuario Registrado", Toast.LENGTH_SHORT).show();
                                 FirebaseUser userFb = auth.getCurrentUser();
                                 saveUserCol(userFb.getUid(), user);
-                                startActivity(new Intent(MainActivity.this, HomeActivity.class));
+
+                                if (userFb.getUid().equals("OCOrtB0gZreb37fkGFBZeYGN0Mv2")) {
+                                    Intent i = new Intent(MainActivity.this, AdminPanel.class);
+                                    startActivity(i);
+                                } else {
+                                    Intent i = new Intent(MainActivity.this, HomeActivity.class);
+                                    startActivity(i);
+                                }
                             }
                         }
                     });
@@ -89,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // si es admin
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }

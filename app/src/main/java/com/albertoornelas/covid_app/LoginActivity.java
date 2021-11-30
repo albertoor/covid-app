@@ -65,7 +65,16 @@ public class LoginActivity extends AppCompatActivity {
                             if (!task.isSuccessful()) {
                                 Toast.makeText(LoginActivity.this, "No se pudo iniciar", Toast.LENGTH_SHORT).show();
                             } else {
-                                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                    FirebaseUser user = auth.getCurrentUser();
+//                                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                System.out.println(user.getUid());
+                                if (user.getUid().equals("OCOrtB0gZreb37fkGFBZeYGN0Mv2")) {
+                                    Intent i = new Intent(LoginActivity.this, AdminPanel.class);
+                                    startActivity(i);
+                                } else {
+                                    Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+                                    startActivity(i);
+                                }
                             }
                         }
                     });

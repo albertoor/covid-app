@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Covidapp">
         <activity
+            android:name=".EditEvent"
+            android:exported="true" />
+        <activity
+            android:name=".AdminPanel"
+            android:exported="true" />
+        <activity
             android:name=".AddEvent"
             android:exported="true" />
         <activity
