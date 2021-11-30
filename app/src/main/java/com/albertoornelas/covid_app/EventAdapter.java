@@ -15,13 +15,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder>  {
 
@@ -36,6 +41,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         public TextView name, place, timestamp, aforo, docId;
         public Button btnAsist;
         private static final String TAG = "Get Event id";
+
 
         public MyViewHolder(View view) {
             super(view);
@@ -52,16 +58,25 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
 //            auth = FirebaseAuth.getInstance();
         }
 
+//        Map<String, Object> attended = new HashMap<>();
+//                    attendee.put("eventId", docId.getText().toString());
+//                    db.collection("users")
+//                            .document(auth.getCurrentUser().getUid())
+//                .collection("attended")
+//                            .document().set(attended);
+
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.btnAsist:
-//                    Toast.makeText(btnAsist.getContext(),docId.getText(), Toast.LENGTH_SHORT).show();
-//                        Event event = new Event(docId.getText(),name.getText().toString(),
-//                            place.getText().toString(),
-//                            timestampTxt.getText().toString(),
-//                            Integer.parseInt(aforoNum.getText().toString()));
+                    Map<String, Object> attendee = new HashMap<>();
+                    attendee.put("userId", auth.getCurrentUser().getUid());
 
+                    // Add data in events
+                    db.collection("events")
+                            .document(docId.getText().toString())
+                            .collection("attendees")
+                            .document().set(attendee);
                     break;
                 default:
                     break;

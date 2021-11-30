@@ -54,7 +54,6 @@ public class AddEvent extends AppCompatActivity {
                 db.collection("events").document().set(event).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-
                         Log.d(TAG, "Evento agreado");
                         nameTxt.setText("");
                         placeTxt.setText("");
