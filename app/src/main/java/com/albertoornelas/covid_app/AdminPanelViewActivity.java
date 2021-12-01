@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -27,6 +28,7 @@ public class AdminPanelViewActivity extends AppCompatActivity {
     private EditText dateEtAdmin;
     private Button btnSaveEventAdmin;
     private Button btnShowEventsAdmin;
+    private Button btnLogOutAdmin;
     private FirebaseFirestore database;
     private String uId,uName, uPlace, uTime, uDate;
 
@@ -42,6 +44,7 @@ public class AdminPanelViewActivity extends AppCompatActivity {
         dateEtAdmin = (EditText) findViewById(R.id.dateEtAdmin);
         btnSaveEventAdmin = (Button) findViewById(R.id.btnSaveEventAdmin);
         btnShowEventsAdmin = (Button) findViewById(R.id.btnShowEventsAdmin);
+        btnLogOutAdmin = (Button) findViewById(R.id.btnLogOutAdmin);
         database = FirebaseFirestore.getInstance();
 
         Bundle bundle = getIntent().getExtras();
@@ -88,6 +91,15 @@ public class AdminPanelViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(AdminPanelViewActivity.this, ListEventAdminViewActivity.class));
+            }
+        });
+
+        btnLogOutAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(AdminPanelViewActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
     }

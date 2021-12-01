@@ -94,7 +94,3 @@ public class MyAdapterAdmin extends RecyclerView.Adapter<MyAdapterAdmin.MyViewHo
         }
     }
 }
-
-
-
-

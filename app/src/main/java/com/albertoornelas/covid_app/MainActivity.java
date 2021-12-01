@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Iniciando variables
+        // init variables
         auth = FirebaseAuth.getInstance();
         nameText = findViewById(R.id.nameTxt);
         emailText = findViewById(R.id.emailTxt);
@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Creamos el usuario
                 UserModel user = new UserModel(
                         nameText.getText().toString(),
                         emailText.getText().toString(),
@@ -72,17 +71,14 @@ public class MainActivity extends AppCompatActivity {
                                         "Error de registro " + task.getException().getMessage(),
                                         Toast.LENGTH_SHORT).show();
                             } else {
+                                nameText.setText("");
+                                emailText.setText("");
+                                passwordText.setText("");
                                 Toast.makeText(MainActivity.this, "Usuario Registrado", Toast.LENGTH_SHORT).show();
                                 FirebaseUser userFb = auth.getCurrentUser();
                                 saveUserCol(userFb.getUid(), user);
-
-                                if (userFb.getUid().equals("OCOrtB0gZreb37fkGFBZeYGN0Mv2")) {
-                                    Intent i = new Intent(MainActivity.this, AdminPanel.class);
-                                    startActivity(i);
-                                } else {
-                                    Intent i = new Intent(MainActivity.this, HomeActivity.class);
-                                    startActivity(i);
-                                }
+                                Intent i = new Intent(MainActivity.this, HomeActivity.class);
+                                startActivity(i);
                             }
                         }
                     });
@@ -92,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // funcion para hacer abrir login
         loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // Funcion para comprobar campos
     public boolean checkFields(UserModel user) {
         boolean everthingIsOkey = false;
         if (user.getName().isEmpty()){
@@ -123,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
         return everthingIsOkey;
     }
 
-    // Crear usuario en la colleccion de usuarios y guardamos su usuario
     public void saveUserCol(String userUid, UserModel user) {
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("name", user.getName());

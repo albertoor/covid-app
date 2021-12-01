@@ -12,9 +12,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -30,19 +33,12 @@ public class HomeActivity extends AppCompatActivity {
 
     private Button bntLogout;
     private TextView currentUserTxt;
+    private TextView countInfected;
     private FirebaseAuth auth;
-    private FirebaseAuth.AuthStateListener authStateListener;
-
-    private List<Event> eventList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private EventAdapter mAdapter;
-    private LinearLayoutManager mLayoutManager;
-    private FirebaseFirestore db;
-    private static final String TAG = "Events";
-    private TextView addEventLink;
-
-    private Event event;
-
+    private FirebaseFirestore database;
+    private MyAdapterUser adapter;
+    private List<EventModel> eventList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +50,20 @@ public class HomeActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         currentUserTxt = findViewById(R.id.currentUseTxt);
         currentUserTxt.setText("Hola, " + auth.getCurrentUser().getEmail());
-        db = FirebaseFirestore.getInstance();
-//        addEventLink = findViewById(R.id.addEventLink);
+        database = FirebaseFirestore.getInstance();
 
-        initViews();
-        getEvents();
+        countInfected = (TextView) findViewById(R.id.countInfected);
+
+        recyclerView = findViewById(R.id.recyclerViewUser);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        eventList = new ArrayList<>();
+        adapter = new MyAdapterUser(this, eventList);
+        recyclerView.setAdapter(adapter);
+
+        fetchEvents();
+
+        listeningCounts();
 
         // listeners
         bntLogout.setOnClickListener(new View.OnClickListener() {
@@ -69,41 +74,44 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-//        addEventLink.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                FirebaseAuth.getInstance().signOut();
-//                Intent intent = new Intent(HomeActivity.this, AddEvent.class);
-//                startActivity(intent);
-//            }
-//        });
     }
 
-    private void initViews() {
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mAdapter = new EventAdapter(eventList);
-        mLayoutManager = new LinearLayoutManager(HomeActivity.this);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
-    }
-
-    private void getEvents() {
-        db.collection("events").addSnapshotListener(new EventListener<QuerySnapshot>() {
+    protected void listeningCounts() {
+        database.collection("infected_participants").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException error) {
-                if (!snapshots.isEmpty()) {
-//                    Event event = new Event();
-                    for (QueryDocumentSnapshot eventDoc : snapshots) {
-                        Event event = eventDoc.toObject(Event.class);
-                        event.setDocId(eventDoc.getId());
-
-                        eventList.add(event);
-                        mAdapter.notifyDataSetChanged();
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful())  {
+                    int count = 0;
+                    for (DocumentSnapshot document: task.getResult()) {
+                        count++;
+                        countInfected.setText("Contador de casos: " + count);
                     }
                 }
             }
         });
     }
+
+    protected void fetchEvents() {
+        database.collection("events").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                eventList.clear();
+
+                for (DocumentSnapshot snapshot : task.getResult()) {
+                    EventModel eventModel = new EventModel(
+                            snapshot.getString("id"), snapshot.getString("name"),
+                            snapshot.getString("place"), snapshot.getString("time"),
+                            snapshot.getString("date"));
+                    eventList.add(eventModel);
+                }
+                adapter.notifyDataSetChanged();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(HomeActivity.this, "Algo salio mal", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

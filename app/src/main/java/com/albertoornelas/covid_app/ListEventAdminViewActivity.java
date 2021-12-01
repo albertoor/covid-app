@@ -33,7 +33,7 @@ public class ListEventAdminViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_event_admin_view);
 
         // Init variables
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerViewUser);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         database = FirebaseFirestore.getInstance();

@@ -18,6 +18,7 @@
         <entry key="app/src/main/res/layout/event.xml" value="0.25" />
         <entry key="app/src/main/res/layout/event_list_row.xml" value="0.25" />
         <entry key="app/src/main/res/layout/event_list_row_admin.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/event_user.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item.xml" value="0.11894273127753303" />
       </map>
     </option>

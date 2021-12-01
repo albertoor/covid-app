@@ -18,15 +18,6 @@
             android:name=".AdminPanelViewActivity"
             android:exported="true" />
         <activity
-            android:name=".EditEvent"
-            android:exported="true" />
-        <activity
-            android:name=".AdminPanel"
-            android:exported="true" />
-        <activity
-            android:name=".AddEvent"
-            android:exported="true" />
-        <activity
             android:name=".LoginActivity"
             android:exported="true" />
         <activity
