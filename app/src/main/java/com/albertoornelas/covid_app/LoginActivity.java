@@ -69,8 +69,11 @@ public class LoginActivity extends AppCompatActivity {
 //                                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                                 System.out.println(user.getUid());
                                 if (user.getUid().equals("OCOrtB0gZreb37fkGFBZeYGN0Mv2")) {
-                                    Intent i = new Intent(LoginActivity.this, AdminPanel.class);
+//                                    Intent i = new Intent(LoginActivity.this, AdminPanel.class);
+//                                    startActivity(i);
+                                    Intent i = new Intent(LoginActivity.this, AdminPanelViewActivity.class);
                                     startActivity(i);
+
                                 } else {
                                     Intent i = new Intent(LoginActivity.this, HomeActivity.class);
                                     startActivity(i);

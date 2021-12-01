@@ -27,6 +27,7 @@ public class EventAdapterAdmin extends RecyclerView.Adapter<EventAdapterAdmin.My
     public Event event;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
+//    private EventModel event;
 
     // Contructor
     public EventAdapterAdmin (List<Event> eventList) {
